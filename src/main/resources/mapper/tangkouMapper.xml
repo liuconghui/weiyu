@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lhny.fishguard.dao.TangkouDao">
+<!-- 添加-->
+	<insert id="insertTangkou" parameterType="map">
+      insert into tangkou values(#{id},#{name},#{length},#{area},#{fishtypeid},#{density},#{createtime},#{dissolvedOxygen},#{pump},#{probe}#{electricity},
+      #{state},#{memberid},#{photo},#{wd4},#{wd5})
+	</insert>
+<!-- 删除 -->
+	<delete id="deleteTangkou" parameterType="string">
+	delete from tangkou where tangkou_id=#{id}
+	</delete>
+<!-- 修改 -->
+	<update id="updateTangkou" parameterType="map">
+	update tangkou set tangkou_name=#{name},tangkou_length=#{length},tangkou_area=#{area},tangkou_fishtypeid=#{fishtypeid},tangkou_density=#{density}
+						tangkou_createtime=#{createtime},tangkou_dissolvedOxygen=#{dissolvedOxygen},tangkou_pump=#{pump},tangkou_probe=#{probe},
+						tangkou_electricity=#{electricity},tangkou_wd1=#{state},tangkou_wd2=#{memberid},tangkou_wd3=#{photo},tangkou_wd4=#{wd4},tangkou_wd5=#{wd5}
+	where tangkou_id=#{id}
+	</update>
+<!-- 查询所有/根据名称，状态 -->
+	<select id="selectTangkou" parameterType="map" resultType="map">
+        select tangkou_id as id,tangkou_name as name,tangkou_length as length,tangkou_area as area,tangkou_fishtypeid as fishtypeid,tangkou_density as density,
+		tangkou_createtime as createtime,tangkou_dissolvedOxygen as dissolvedOxygen,tangkou_pump as pump,tangkou_probe as probe,tangkou_electricity as electricity,
+		tangkou_wd1 as state,tangkou_wd2 as memberid,tangkou_wd3 as photo,tangkou_wd4 as wd4,tangkou_wd5 as wd5
+		from tangkou
+        <where>
+			<if test="memberid!=null">and memberid like #{memberid}</if>
+        	<if test="name!=null">and tangkou_name like #{name}</if>
+			<if test="state!=null">and tangkou_wd1 like #{state}</if>
+        </where>
+	</select>
+
+<!-- 检测id查询 -->
+	<select id="checkTangkouId" parameterType="string" resultType="int">
+		select count(*) from tangkou where tangkou_id=#{id}
+	</select>
+<!--根据id查询-->
+	<select id="selectTangkouByid" parameterType="string" resultType="map">
+        select tangkou_id as id,tangkou_name as name,tangkou_length as length,tangkou_area as area,tangkou_fishtypeid as fishtypeid,tangkou_density as density,
+		tangkou_createtime as createtime,tangkou_dissolvedOxygen as dissolvedOxygen,tangkou_pump as pump,tangkou_probe as probe,tangkou_electricity as electricity,
+		tangkou_wd1 as state,tangkou_wd2 as memberid,tangkou_wd3 as photo,tangkou_wd4 as wd4,tangkou_wd5 as wd5
+		from tangkou where tangkou_id=#{id}
+	</select>
+
+</mapper>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lhny.fishguard.dao.DeviceDao">
+<!-- 添加-->
+	<insert id="insertDevice" parameterType="map">
+      insert into device values(#{id},#{name},#{num},#{state},#{swVersion},#{hwVersion},#{QRcode},#{birthtime},#{activationTime},#{describe},#{memberid},
+      #{sbwhr},#{photo},#{tangkouid},#{switch},#{wd3},#{wd4},#{wd5})
+	</insert>
+<!-- 删除 -->
+	<update id="deleteDevice" parameterType="string">
+		update device set device_state='5' where member_id=#{id}
+	</update>
+<!-- 修改 -->
+	<update id="updateDevice" parameterType="map">
+	update device set device_name=#{name},device_num=#{num},device_state=#{state},device_swVersion=#{swVersion},device_hwVersion=#{hwVersion}
+	device_QRcode=#{QRcode},device_birthtime=#{birthtime},device_activationTime=#{activationTime},device_memberid=#{memberid},device_sbwhr=#{sbwhr},
+	device_photo=#{photo},device_wd1=#{tangkouid},device_wd2=#{switch},device_wd3=#{wd3},device_wd4=#{wd4},device_wd5=#{wd5},
+	where device_id=#{id}
+	</update>
+<!-- 查询所有/根据设备名称，状态，软件/硬件版本，出厂编号，设备购买时间，会员id，设备维护人查询 -->
+	<select id="selectDevice" parameterType="map" resultType="map">
+        select device_id as id,device_name as name,device_num as num,device_state as state,device_swVersion as swVersion,device_hwVersion as hwVersion,
+		device_QRcode as QRcode,device_birthtime as birthtime,device_activationTime as activationTime,device_memberid as memberid,device_sbwhr as sbwhr,
+		device_photo as photo,device_wd1 as tangkouid,device_wd2 as switch,device_wd3 as wd3,device_wd4 as wd4,device_wd5 as wd5 from device
+        <where>
+			<if test="id!=null">and device_id like #{id}</if>
+        	<if test="name!=null">and device_name like #{name}</if>
+        	<if test="state!=null">and device_state like #{state}</if>
+			<if test="swVersion!=null">and device_swVersion like #{swVersion}</if>
+			<if test="hwVersion!=null">and device_hwVersion like #{hwVersion}</if>
+			<if test="birthtime!=null">and device_birthtime like #{birthtime}</if>
+			<if test="activationTime!=null">and device_activationTime like #{activationTime}</if>
+			<if test="memberid!=null">and device_memberid like #{memberid}</if>
+			<if test="sbwhr!=null">and device_sbwhr like #{sbwhr}</if>
+			<if test="tangkouid!=null">and device_wd1 like #{tangkouid}</if>
+			<if test="switch!=null">and device_wd2 like #{switch}</if>
+        </where>
+	</select>
+
+<!-- 检测id查询 -->
+	<select id="checkDeviceId" parameterType="string" resultType="int">
+		select count(*) from device where device_id=#{id}
+	</select>
+<!--根据id查询-->
+	<select id="selectDeviceByid" parameterType="string" resultType="map">
+  		select device_id as id,device_name as name,device_num as num,device_state as state,device_swVersion as swVersion,device_hwVersion as hwVersion,
+		device_QRcode as QRcode,device_birthtime as birthtime,device_activationTime as activationTime,device_memberid as memberid,device_sbwhr as sbwhr,
+		device_photo as photo,device_wd1 as wd1,device_wd2 as switch,device_wd3 as wd3,device_wd4 as wd4,device_wd5 as wd5
+		from device	 where device_id=#{id}
+	</select>
+
+	<!-- 检测异常数量 -->
+	<select id="checkerror" parameterType="map" resultType="int">
+		select count(*) from device where device_state="3" and device_memberid=#{memberid} and device_wd1=#{tangkouid}
+	</select>
+
+	<!-- 检测正常数量 -->
+	<select id="checkright" parameterType="map" resultType="int">
+		select count(*) from device where device_state="4" and device_memberid=#{memberid} and device_wd1=#{tangkouid}
+	</select>
+
+	<!-- 检测总数量 -->
+	<select id="checkall" parameterType="map" resultType="int">
+		select count(*) from device where device_state in ('3','4') and device_memberid=#{memberid} and device_wd1=#{tangkouid}
+	</select>
+
+	<!-- 修改设备开关 -->
+	<update id="switches" parameterType="map">
+		update device set device_wd2=#{switch} where device_id=#{id} and device_wd1=#{tangkouid}
+	</update>
+
+	<!-- 查询所有/根据设备名称，状态，软件/硬件版本，出厂编号，设备购买时间，会员id，设备维护人查询 -->
+	<select id="selectDeviceEqu" parameterType="map" resultType="map">
+		select de.device_id as id,de.device_name as name,de.device_num as num,de.device_state as state,de.device_swVersion as swVersion,de.device_hwVersion as hwVersion,
+		de.device_QRcode as QRcode,de.device_birthtime as birthtime,de.device_activationTime as activationTime,de.device_memberid as memberid,de.device_sbwhr as sbwhr,
+		de.device_photo as photo,de.device_wd1 as tangkouid,de.device_wd2 as switch,de.device_wd3 as wd3,de.device_wd4 as wd4,de.device_wd5 as wd5,
+		eq.equipmentConfiguration_switchMode as switchMode,eq.equipmentConfiguration_upperThreshold as upperThreshold,
+		eq.equipmentConfiguration_downThreshold as downThreshold,eq.equipmentConfiguration_isopen as isopen,eq.equipmentConfiguration_opentime as opentime,
+		eq.equipmentConfiguration_closetime as closetime,eq.equipmentConfiguration_wd1 as wd1,eq.equipmentConfiguration_wd2 as wd2,eq.equipmentConfiguration_wd3 as wd3,
+		eq.equipmentConfiguration_wd4 as wd4,eq.equipmentConfiguration_wd5 as wd5
+		from device as de
+		left join equipmentConfiguration as eq on eq.equipmentConfiguration_deviceid=de.device_id
+		<where>
+			<if test="id!=null">and de.device_id like #{id}</if>
+			<if test="name!=null">and de.device_name like #{name}</if>
+			<if test="state!=null">and de.device_state like #{state}</if>
+			<if test="swVersion!=null">and de.device_swVersion like #{swVersion}</if>
+			<if test="hwVersion!=null">and de.device_hwVersion like #{hwVersion}</if>
+			<if test="birthtime!=null">and de.device_birthtime like #{birthtime}</if>
+			<if test="activationTime!=null">and de.device_activationTime like #{activationTime}</if>
+			<if test="memberid!=null">and device_memberid like #{memberid}</if>
+			<if test="sbwhr!=null">and de.device_sbwhr like #{sbwhr}</if>
+			<if test="tangkouid!=null">and de.device_wd1 like #{tangkouid}</if>
+			<if test="switch!=null">and de.device_wd2 like #{switch}</if>
+		</where>
+	</select>
+</mapper>

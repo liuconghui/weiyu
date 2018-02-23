@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lhny.fishguard.dao.EquipmentConfigurationDao">
+<!-- 添加-->
+	<insert id="insertEquipmentConfiguration" parameterType="map">
+      insert into equipmentConfiguration values(#{id},#{switchMode},#{upperThreshold},#{downThreshold},#{isopen},#{opentime},#{closetime},#{wd1},#{wd2},#{wd3},#{wd4},#{wd5})
+	</insert>
+<!-- 删除 -->
+	<delete id="deleteEquipmentConfiguration" parameterType="string">
+	delete from equipmentConfiguration where equipmentConfiguration_deviceid=#{id}
+	</delete>
+<!-- 修改 -->
+	<update id="updateEquipmentConfiguration" parameterType="map">
+	update equipmentConfiguration set device_name=#{name},device_num=#{num},device_state=#{state},device_swVersion=#{swVersion},device_hwVersion=#{hwVersion}
+	device_QRcode=#{QRcode},device_birthtime=#{birthtime},device_activationTime=#{activationTime},device_memberid=#{memberid},device_sbwhr=#{sbwhr},
+	device_photo=#{photo},device_wd1=#{wd1},device_wd2=#{wd2},device_wd3=#{wd3},device_wd4=#{wd4},device_wd5=#{wd5},
+	where equipmentConfiguration_deviceid=#{id}
+	</update>
+
+<!-- 检测id查询 -->
+	<select id="checkEquipmentConfigurationId" parameterType="string" resultType="int">
+		select count(*) from equipmentConfiguration where equipmentConfiguration_deviceid=#{id}
+	</select>
+<!--根据id查询-->
+	<select id="selectEquipmentConfigurationByid" parameterType="string" resultType="map">
+  select equipmentConfiguration_deviceid as id,equipmentConfiguration_switchMode as switchMode,equipmentConfiguration_upperThreshold as upperThreshold,
+		equipmentConfiguration_downThreshold as downThreshold,equipmentConfiguration_isopen as isopen,equipmentConfiguration_opentime as opentime,
+		equipmentConfiguration_closetime as closetime,equipmentConfiguration_wd1 as wd1,equipmentConfiguration_wd2 as wd2,equipmentConfiguration_wd3 as wd3,
+		equipmentConfiguration_wd4 as wd4,equipmentConfiguration_wd5 as wd5 from equipmentConfiguration
+		from equipmentConfiguration	 where equipmentConfiguration_deviceid=#{id}
+	</select>
+
+</mapper>
