@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lhny.fishguard.dao.MemberDao">
+<!-- 添加-->
+	<insert id="insertMember" parameterType="map">
+      insert into member values(#{id},#{openid},#{phone},#{creattime},#{state},#{wd1},#{wd2},#{wd3},#{wd4},#{wd5})
+	</insert>
+<!-- 删除 -->
+	<delete id="deleteMember" parameterType="string">
+	delete from member where member_id=#{id}
+	</delete>
+<!-- 修改 -->
+	<update id="updateMember" parameterType="map">
+	update member set member_openid=#{openid},member_phone=#{phone},member_creattime=#{creattime},
+	member_state=#{state},member_wd1=#{wd1},member_wd2=#{wd2},member_wd3=#{wd3},member_wd4=#{wd4},member_wd5=#{wd5}
+	where member_id=#{id}
+	</update>
+<!-- 查询所有/根据code/phoe查询 -->
+	<select id="selectMember" parameterType="map" resultType="map">
+        select member_id as id,member_openid as openid,member_phone as phone,member_creattime as creattime,
+		member_state as state,member_wd1 as wd1,member_wd2 as wd2,member_wd3 as wd3,member_wd4 as wd4,member_wd5 as wd5 from member
+        <where>
+        	<if test="phone!=null">and member_phone like #{phone}</if>
+        	<if test="openid!=null">and member_openid like #{openid}</if>
+        </where>
+	</select>
+	<!-- 检测重复 -->
+	<select id="selectMemberCount" parameterType="map" resultType="int">
+		select count(*) FROM member
+		<where>
+			<if test="phone!=null">and member_phone like #{phone}</if>
+			<if test="openid!=null">and member_openid like #{openid}</if>
+		</where>
+	</select>
+<!-- 检测id查询 -->
+	<select id="checkMemberId" parameterType="string" resultType="int">
+		select count(*) from member where member_id=#{id}
+	</select>
+<!--根据id查询-->
+	<select id="selectMemberByid" parameterType="string" resultType="map">
+        select member_id as id,member_openid as openid,member_phone as phone,member_creattime as creattime,member_state as state,member_wd1 as wd1,member_wd2 as wd2,member_wd3 as wd3,member_wd4 as wd4,member_wd5 as wd5 from member
+		where member_id=#{id}
+	</select>
+
+</mapper>

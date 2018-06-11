@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lhny.fishguard.dao.ModuleDao">
+<!-- 添加-->
+	<insert id="insertModule" parameterType="map">
+      insert into module values(#{id},#{name},#{url},#{fid},#{fname},#{whr},#{whrid},#{whsj})
+	</insert>
+<!-- 删除 -->
+	<delete id="deleteModule" parameterType="string">
+	delete from module where module_id=#{id}
+	</delete>
+<!-- 修改 -->
+	<update id="updateModule" parameterType="map">
+	update module set module_name=#{name},module_url=#{url},module_fid=#{fid},module_fname=#{fname},module_whr=#{whr},module_whrid=#{whrid},module_whsj=#{whsj}
+	where module_id=#{id}
+	</update>
+<!-- 查询所有/根据fid查询 -->
+	<select id="selectModule" parameterType="map" resultType="map">
+        select module_id as id,module_name as name,module_url as url,module_fid as fid,module_fname as fname,module_whr as whr,module_whrid as whrid,module_whsj as whsj from module
+        <where>
+        	<if test="fid!=null">and module_fid like #{fid}</if>
+        	<if test="name!=null">and module_name like '%'||#{name}||'%'</if>
+        </where>
+	</select>
+<!-- 检测id查询 -->
+	<select id="checkModuleId" parameterType="string" resultType="int">
+		select count(*) from module where module_id=#{id}
+	</select>
+<!--根据id查询-->
+	<select id="selectModuleByid" parameterType="string" resultType="map">
+		select module_id as id,module_name as name,module_url as url,module_fid as fid,module_fname as fname,module_whr as whr,module_whrid as whrid,module_whsj as whsj from module where module_id=#{id}
+	</select>
+	<!--查询所有父类id-->
+	<select id="selectModulefid" resultType="map">
+		select distinct module_fid as fid,module_fname as fname from module
+	</select>
+</mapper>

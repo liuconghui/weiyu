@@ -1,0 +1,90 @@
+//模块
+create table module(
+	module_id varchar(20),
+	module_name varchar(100),
+	module_url varchar(100),
+	module_fid varchar(20),
+	module_fname varchar(100),
+	module_whr varchar(100),
+	module_whrid varchar(100),
+	module_whsj varchar(100)
+);
+
+//角色
+create table role(
+	role_id varchar(20),
+	role_name varchar(100),
+	role_moduleid varchar(100),
+	role_whr varchar(100),
+	role_whrid varchar(100),
+	role_whsj varchar(100)
+);
+
+//会员
+create table member(
+    member_id varchar(50),
+    member_openid varchar(50),
+    member_phone varchar(50),
+    member_createtime varchar(50),
+    member_state varchar(1),
+    member_wd1 varchar(50),
+    member_wd2 varchar(50),
+    member_wd3 varchar(50),
+    member_wd4 varchar(50),
+    member_wd5 varchar(50)
+);
+
+create table tangkou(
+    tangkou_id varchar(50),
+    tangkou_name varchar(50),
+    tangkou_length varchar(50),
+    tangkou_area varchar(50),
+    tangkou_fishtypeid varchar(50),
+    tangkou_density varchar(50),
+    tangkou_createtime varchar(50),
+    tangkou_dissolvedOxygen  varchar(50),
+    tangkou_pump varchar(50),
+    tangkou_probe varchar(50),
+    tangkou_electricity varchar(50),
+    tangkou_wd1 varchar(50),
+    tangkou_wd2 varchar(50),
+    tangkou_wd3 varchar(50),
+    tangkou_wd4 varchar(50),
+    tangkou_wd5 varchar(50)
+);
+
+create table device(
+    device_id varchar(50),
+    device_name varchar(50),
+    device_num varchar(50),
+    device_state varchar(1),
+    device_swVersion varchar(50),
+    device_hwVersion varchar(50),
+    device_QRcode varchar(200),
+    device_birthtime varchar(50),
+    device_activationTime varchar(50),
+    device_describe varchar(200),
+    device_memberid varchar(50),
+    device_sbwhr varchar(50),
+    device_photo varchar(50),
+    device_wd1 varchar(50),
+    device_wd2 varchar(50),
+    device_wd3 varchar(50),
+    device_wd4 varchar(50),
+    device_wd5 varchar(50)
+);
+
+create table equipmentConfiguration(
+    equipmentConfiguration_deviceid varchar(50),
+    equipmentConfiguration_switchMode varchar(50),
+    equipmentConfiguration_upperThreshold varchar(50),
+    equipmentConfiguration_downThreshold varchar(50),
+    equipmentConfiguration_isopen varchar(50),
+    equipmentConfiguration_opentime varchar(50),
+    equipmentConfiguration_closetime varchar(50),
+    equipmentConfiguration_wd1 varchar(50),
+    equipmentConfiguration_wd2 varchar(50),
+    equipmentConfiguration_wd3 varchar(50),
+    equipmentConfiguration_wd4 varchar(50),
+    equipmentConfiguration_wd5 varchar(50)
+);
